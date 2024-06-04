@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
-import { createCertificateAttestation } from 'certified-sdk';
+import React, { useState, ReactElement } from 'react';
+import ReactDOM from 'react-dom';
+import { createCertificateAttestation, Certificate } from 'certified-sdk';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import SignMessageButton from './SignMessageButton';
 import DynamicConnectButton from "./walletWidget";
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import axios from 'axios';
+
+import testSignature from './test_signature.png'; // Ensure the path is correct
+import testImage from './test_image.png'; // Ensure the path is correct
+import testMarkerImage from './test_markerImage.png'; // Ensure the path is correct
 
 const CertificateForm = () => {
   const { primaryWallet } = useDynamicContext();
@@ -18,6 +26,7 @@ const CertificateForm = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [records, setRecords] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +44,25 @@ const CertificateForm = () => {
       return;
     }
 
+
+    const certificateComponent = (
+      <Certificate
+        artworkTitle="Boardwalk 1990"
+        artistName="Tom Wilson"
+        yearOfCompletion="21/12/2025"
+        dimensions="254x50cm"
+        editionNumber="7/50"
+        medium="Embroidery on fabric, weaving with yarn or thread, batik on cotton"
+        registrationNumber="sadaw346hdvbb"
+        dateOfCertification="21/12/2025"
+        signatureImagePath={testSignature}
+        artworkImagePath={testImage}
+        markerImagePath={testMarkerImage}
+        certificateUrl="https://scan.sign.global/attestation/SPA_wskUuBJlnoH9Bunzoisee"
+      />
+    );
+
+
     try {
       const attestationResult = await createCertificateAttestation(
         primaryWallet,
@@ -45,44 +73,27 @@ const CertificateForm = () => {
         formData.issuedToWallet,
         new Date(formData.expirationDate),
         formData.extra,
-        "0" // templateId default 0
+        certificateComponent
       );
+
       setResult(attestationResult);
+      setPdfUrl(attestationResult.pdfUrl);
       setError(null);
+      console.log("attestationResult", attestationResult);
+      
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleFetchRecords = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/func/fetch-record', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ schemaId: 'YOUR_SCHEMA_ID' }) // Replace with your actual schemaId
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setRecords(data.records);
-        setError(null);
-      } else {
-        setError(data.error);
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-  };
 
   return (
     <><div>
 
          
-      </div><div>
-              <h1>Create Certificate Attestation</h1>
-              
+      </div>    <div>
+        <h1>Create Certificate Attestation</h1>
+        
               <DynamicConnectButton />
 
 
@@ -99,8 +110,11 @@ const CertificateForm = () => {
               {result && <div>Attestation Created: {JSON.stringify(result)}</div>}
               {error && <div>Error: {error}</div>}
               <SignMessageButton />
-              <button onClick={handleFetchRecords}>Fetch Records</button>
+
               {records && <div>Records: {JSON.stringify(records)}</div>}
+
+              {pdfUrl && <div><a href={pdfUrl} target="_blank" rel="noopener noreferrer">View PDF</a></div>}
+ 
           </div></>
   );
 };
