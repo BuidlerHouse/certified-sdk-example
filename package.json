@@ -1,0 +1,61 @@
+{
+  "name": "certified-sdk-example",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^7.1.0",
+    "@dynamic-labs/ethereum": "^2.0.8",
+    "@dynamic-labs/ethers-v5": "^2.0.8",
+    "@dynamic-labs/sdk-react-core": "^2.0.8",
+    "@solana/web3.js": "^1.29.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.13.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
+    "axios": "^1.7.2",
+    "certified-sdk": "file:certified-sdk-1.0.0.tgz",
+    "eth-rpc-errors": "^4.0.3",
+    "ethereumjs-util": "^7.1.5",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
+    "next-auth": "^4.24.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "^5.0.1",
+    "rpc-websockets": "^7.10.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6"
+  }
+}

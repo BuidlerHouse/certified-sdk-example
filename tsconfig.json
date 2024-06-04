@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "strict": true,
+      "jsx": "react",
+      "allowJs": true,
+      "checkJs": false,
+      "outDir": "./dist",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true
+    },
+    "include": ["src/**/*", "node_modules/certified-sdk/src/**/*"]
+  }
+  
