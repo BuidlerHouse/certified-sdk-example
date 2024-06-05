@@ -4,6 +4,10 @@ import { createCertificateAttestation, Certificate,generateAndUploadPDF } from '
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import DynamicConnectButton from "./walletWidget";
 
+import testSignature from './test_signature.png';
+import testImage from './test_image.png';
+import testMarkerImage from './test_markerImage.png';
+
 const CertificateForm = () => {
   const { primaryWallet } = useDynamicContext();
   const [formData, setFormData] = useState({
@@ -189,8 +193,6 @@ const CertificateForm = () => {
         <h1>Create Certificate Attestation</h1>
         
               <DynamicConnectButton />
-
-
               <form onSubmit={handleSubmit}>
               <input name="artworkTitle" placeholder="Artwork Title" value={formData.artworkTitle} onChange={handleChange} />
               <input name="artistName" placeholder="Artist Name" value={formData.artistName} onChange={handleChange} />
@@ -242,7 +244,22 @@ const CertificateForm = () => {
   
 
               <div id="certificate-container">
-              {/* Render the Certificate component here */}
+              <Certificate
+                  artworkTitle="Boardwalk 1990"
+                  artistName="Tom Wilson"
+                  yearOfCompletion="21/12/2025"
+                  dimensions="254x50cm"
+                  editionNumber="7/50"
+                  medium="Embroidery on fabric, weaving with yarn or thread, batik on cotton
+                  This document certifies that the accompanying artwork, titled [Artwork Title], is an original work created by [Artist’s Name]. This certificate is provided to affirm the authenticity of the aforementioned artwork.
+                  "
+                  registrationNumber="sadaw346hdvbb"
+                  dateOfCertification="21/12/2025"
+                  signatureImagePath={testSignature} 
+                  artworkImagePath={testImage}
+                  markerImagePath={testMarkerImage}
+                  certificateUrl="https://scan.sign.global/attestation/SPA_wskUuBJlnoH9Bunzoisee"      
+              />
             </div>
 
 
