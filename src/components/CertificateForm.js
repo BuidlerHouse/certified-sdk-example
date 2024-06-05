@@ -16,7 +16,9 @@ const CertificateForm = () => {
     registrationNumber: '',
     note: '',
     certificationName: '',
-    certificationOrganization: ''
+    certificationOrganization: '',
+    apiKey:'',
+    templateId:''
   });
 
   const [images, setImages] = useState({
@@ -36,7 +38,6 @@ const CertificateForm = () => {
   const [records, setRecords] = useState(null);
   const [pdfUrl, setPdfUrl] = useState('');
   const [attestationLink, setAttestationLink] = useState('');
-
 
 
   const handleChange = (e) => {
@@ -65,7 +66,6 @@ const CertificateForm = () => {
       reader.readAsDataURL(file);
     }
   };
-
 
   
   const handleSubmit = async (e) => {
@@ -100,7 +100,9 @@ const CertificateForm = () => {
         formData.certificationOrganization,
         "default issue-to-wallet", // (TO-DO Frank) : default issue-to-wallet
         new Date("2020-02-03"), // (TO-DO Frank) : default expirationDate
-        extra
+        extra,
+        formData.apiKey,
+        formData.templateId
       );
 
       // set the local state variable using the created attestation information
@@ -129,9 +131,14 @@ const CertificateForm = () => {
         />
       );
   
+
       try {
         const pdfUrl = await generateAndUploadPDF(certificateComponent);
         setPdfUrl(pdfUrl);
+  
+        // Render the Certificate component
+        ReactDOM.render(certificateComponent, document.getElementById('certificate-container'));
+
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -139,8 +146,7 @@ const CertificateForm = () => {
           setError('An unknown error occurred');
         }
       }
-
-
+    
     } catch (err) {
       setError(err.message);
     }
@@ -196,7 +202,15 @@ const CertificateForm = () => {
               <input name="note" placeholder="Note" value={formData.note} onChange={handleChange} />
               <input name="certificationName" placeholder="Certification Name" value={formData.certificationName} onChange={handleChange} />
               <input name="certificationOrganization" placeholder="Certification Organization" value={formData.certificationOrganization} onChange={handleChange} />
-          
+              <> </>
+              <> </>
+              <p>API KEY</p>
+              <input name="apiKey" placeholder="API Key" value={formData.apiKey} onChange={handleChange} />
+              <> </>
+              <p>TemplateID (If not have it yet then please skip it)</p>
+              <input name="templateId" placeholder="Template Id" value={formData.templateId} onChange={handleChange} />
+
+
               <div>
                   <label>Signature Image</label>
                   <input type="file" name="signature" onChange={handleImageChange} />
@@ -226,7 +240,10 @@ const CertificateForm = () => {
             
               {pdfUrl && <div><a href={pdfUrl} target="_blank" rel="noopener noreferrer">View PDF</a></div>}
   
-              
+
+              <div id="certificate-container">
+              {/* Render the Certificate component here */}
+            </div>
 
 
 
