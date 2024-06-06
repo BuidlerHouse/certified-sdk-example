@@ -31,9 +31,9 @@ const CertificateForm = () => {
   });
 
   const [images, setImages] = useState({
-    signature: null,
-    artwork: null,
-    marker: null,
+    signature: testSignature,
+    artwork: testImage,
+    marker: testMarkerImage,
   });
   const [imageNames, setImageNames] = useState({
     signature: "",
