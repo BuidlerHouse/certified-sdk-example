@@ -1,9 +1,7 @@
 import React, { useState, ReactElement } from "react";
 import ReactDOM from "react-dom";
 import {
-  createCertificateAttestation,
-  Certificate,
-  generateAndUploadPDF,
+  Certificate, createAttestation
 } from "certified-sdk";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import DynamicConnectButton from "./walletWidget";
@@ -22,29 +20,14 @@ const CertificateForm = () => {
     editionNumber: "1/50",
     medium:
       "Embroidery on fabric, weaving with yarn or thread, batik on cotton. \n\n\n\n This document certifies that the accompanying artwork, titled [Artwork Title], is an original work created by [Artist’s Name]. This certificate is provided to affirm the authenticity of the aforementioned artwork.",
-    registrationNumber: "",
-    note: "",
-    certificationName: "",
-    certificationOrganization: "",
-    apiKey: "",
-    templateId: "",
-  });
-
-  const [images, setImages] = useState({
-    signature: testSignature,
-    artwork: testImage,
-    marker: testMarkerImage,
-  });
-  const [imageNames, setImageNames] = useState({
-    signature: "",
-    artwork: "",
-    marker: "",
+    registrationNumber: "1",
+    certificationOrganization: "MarkMaker",
+    apiKey: ""
   });
 
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [records, setRecords] = useState(null);
-  const [pdfUrl, setPdfUrl] = useState("");
   const [attestationLink, setAttestationLink] = useState("");
 
   const handleChange = (e) => {
@@ -55,62 +38,34 @@ const CertificateForm = () => {
     });
   };
 
-  const handleImageChange = (e) => {
-    const { name, files } = e.target;
-    const file = files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImages((prevImages) => ({
-          ...prevImages,
-          [name]: reader.result,
-        }));
-        setImageNames((prevImageNames) => ({
-          ...prevImageNames,
-          [name]: file.name,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!primaryWallet) {
       setError("Primary wallet not connected");
       return;
     }
-
-    const extra = JSON.stringify({
+    const metadata = JSON.stringify({
       artworkTitle: formData.artworkTitle,
       artistName: formData.artistName,
       yearOfCompletion: formData.yearOfCompletion,
       dimensions: formData.dimensions,
       editionNumber: formData.editionNumber,
       medium: formData.medium,
-      registrationNumber: formData.registrationNumber,
-      note: formData.note,
-      certificationName: formData.certificationName,
-      certificationOrganization: formData.certificationOrganization,
+      registrationNumber: formData.registrationNumber
     });
-
-    console.log("CertificateForm: extra", extra);
-
     try {
-      const attestationResult = await createCertificateAttestation(
-        primaryWallet,
-        "default name", // (TO-DO Frank) : default name
-        formData.note,
-        formData.certificationName,
-        formData.certificationOrganization,
-        "default issue-to-wallet", // (TO-DO Frank) : default issue-to-wallet
-        new Date("2020-02-03"), // (TO-DO Frank) : default expirationDate
-        extra,
-        formData.apiKey,
-        formData.templateId
+      const attestationResult = await createAttestation(
+        primaryWallet, // primaryWallet, from dynamic context,
+        formData.registrationNumber, // certificate_id
+        formData.artistName, // holderName of COA
+        formData.medium, // details of COA
+        "Certificate of Authenticity for Artwork: " + formData.artworkTitle, // name of COA
+        formData.certificationOrganization, // organizationName of COA
+        [], // url, gonna be attested by the creator, if needed.
+        "", // extra, keep empty
+        metadata, // metadata, see above
+        formData.apiKey // apiKey
       );
-
       // set the local state variable using the created attestation information
       setResult(attestationResult);
       const link = `https://scan.sign.global/attestation/${attestationResult.attestationId}`;
@@ -118,73 +73,8 @@ const CertificateForm = () => {
       console.log("attestationLink", attestationLink);
       setError(null);
       console.log("attestationResult", attestationResult);
-
-      // generate and upload pdf
-      const certificateComponent = (
-        <Certificate
-          artworkTitle={formData.artworkTitle}
-          artistName={formData.artistName}
-          yearOfCompletion={formData.yearOfCompletion}
-          dimensions={formData.dimensions}
-          editionNumber={formData.editionNumber}
-          medium={formData.medium}
-          registrationNumber={formData.registrationNumber}
-          dateOfCertification={new Date().toLocaleDateString("en-GB")}
-          signatureImagePath={images.signature}
-          artworkImagePath={images.artwork}
-          markerImagePath={images.marker}
-          certificateUrl={attestationLink}
-        />
-      );
-
-      try {
-        const pdfUrl = await generateAndUploadPDF(certificateComponent);
-        setPdfUrl(pdfUrl);
-
-        // Render the Certificate component
-        ReactDOM.render(
-          certificateComponent,
-          document.getElementById("certificate-container")
-        );
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred");
-        }
-      }
     } catch (err) {
       setError(err.message);
-    }
-  };
-
-  const handleGeneratePdfUrl = async () => {
-    const certificateComponent = (
-      <Certificate
-        artworkTitle={formData.artworkTitle}
-        artistName={formData.artistName}
-        yearOfCompletion={formData.yearOfCompletion}
-        dimensions={formData.dimensions}
-        editionNumber={formData.editionNumber}
-        medium={formData.medium}
-        registrationNumber={formData.registrationNumber}
-        dateOfCertification={new Date().toLocaleDateString("en-GB")}
-        signatureImagePath={images.signature}
-        artworkImagePath={images.artwork}
-        markerImagePath={images.marker}
-        certificateUrl={attestationLink}
-      />
-    );
-
-    try {
-      const pdfUrl = await generateAndUploadPDF(certificateComponent);
-      setPdfUrl(pdfUrl);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred");
-      }
     }
   };
 
@@ -192,7 +82,7 @@ const CertificateForm = () => {
     <>
       <div></div>
       <div>
-        <h1>Create Certificate Attestation</h1>
+        <h1>Certified SDK Integration Demo</h1>
 
         <DynamicConnectButton />
         <form onSubmit={handleSubmit}>
@@ -240,18 +130,6 @@ const CertificateForm = () => {
             onChange={handleChange}
           />
           <input
-            name="note"
-            placeholder="Note"
-            value={formData.note}
-            onChange={handleChange}
-          />
-          <input
-            name="certificationName"
-            placeholder="Certification Name"
-            value={formData.certificationName}
-            onChange={handleChange}
-          />
-          <input
             name="certificationOrganization"
             placeholder="Certification Organization"
             value={formData.certificationOrganization}
@@ -267,49 +145,11 @@ const CertificateForm = () => {
             onChange={handleChange}
           />
           <> </>
-          <p>TemplateID (If not have it yet then please skip it)</p>
-          <input
-            name="templateId"
-            placeholder="Template Id"
-            value={formData.templateId}
-            onChange={handleChange}
-          />
-
-          {/* <div>
-            <label>Signature Image</label>
-            <input type="file" name="signature" onChange={handleImageChange} />
-            {imageNames.signature && <p>Uploaded: {imageNames.signature}</p>}
-          </div>
-
-          <div>
-            <label>Artwork Image</label>
-            <input type="file" name="artwork" onChange={handleImageChange} />
-            {imageNames.artwork && <p>Uploaded: {imageNames.artwork}</p>}
-          </div>
-
-          <div>
-            <label>Marker Image</label>
-            <input type="file" name="marker" onChange={handleImageChange} />
-            {imageNames.marker && <p>Uploaded: {imageNames.marker}</p>}
-          </div> */}
-
           <button type="submit">Create Attestation</button>
         </form>
-
         {result && <div>Attestation Created: {JSON.stringify(result)}</div>}
-
         {error && <div>Error: {error}</div>}
-
         {records && <div>Records: {JSON.stringify(records)}</div>}
-
-        {pdfUrl && (
-          <div>
-            <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-              View PDF
-            </a>
-          </div>
-        )}
-
         <div id="certificate-container">
           <Certificate
             artworkTitle={formData.artworkTitle}
