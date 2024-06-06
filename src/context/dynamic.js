@@ -44,7 +44,7 @@ export const DynamicProvider = ({ children }) => {
     return (
         <DynamicContextProvider
             settings={{
-                environmentId: "1ae5c5e4-4c40-4b22-ba01-fef201e60b89",
+                environmentId: "31e19e44-fbba-4d33-96d3-c4f0ac4e13dc",
                 walletConnectors: [EthereumWalletConnectors],
                 eventsCallbacks: {
                     onAuthFlowCancel: async () => {
