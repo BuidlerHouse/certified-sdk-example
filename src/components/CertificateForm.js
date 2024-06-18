@@ -48,7 +48,7 @@ const CertificateForm = () => {
     const extra = JSON.stringify({
       signatureImageUrl: testSignature, // PDF generate need this one
       markerImageUrl: testMarkerImage, // PDF generate need this one
-      logoImageUrl: testImage, // PDF generate need this one
+      imageUrl: testImage, // PDF generate need this one
       editionNumber: 10 // PDF generate need this one
     });
     const metadata = JSON.stringify({
