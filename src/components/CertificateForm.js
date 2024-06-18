@@ -6,9 +6,9 @@ import {
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import DynamicConnectButton from "./walletWidget";
 
-import testSignature from "./test_signature.png";
-import testImage from "./test_image.png";
-import testMarkerImage from "./test_markerImage.png";
+const testSignature = "https://sdk-static.thecertified.xyz/test_signature.png";
+const testImage = "https://sdk-static.thecertified.xyz/test_image.png";
+const testMarkerImage = "https://sdk-static.thecertified.xyz/test_markerImage.png";
 
 const CertificateForm = () => {
   const { primaryWallet } = useDynamicContext();
@@ -44,6 +44,11 @@ const CertificateForm = () => {
       setError("Primary wallet not connected");
       return;
     }
+    const extra = JSON.stringify({
+      signatureImageUrl: testSignature, // PDF generate need this one
+      markerImageUrl: testMarkerImage, // PDF generate need this one
+      logoImageUrl: testImage, // PDF generate need this one
+    });
     const metadata = JSON.stringify({
       artworkTitle: formData.artworkTitle,
       artistName: formData.artistName,
@@ -53,6 +58,7 @@ const CertificateForm = () => {
       medium: formData.medium,
       registrationNumber: formData.registrationNumber
     });
+    const 
     try {
       const attestationResult = await createAttestation(
         primaryWallet, // primaryWallet, from dynamic context,
@@ -62,7 +68,7 @@ const CertificateForm = () => {
         "Certificate of Authenticity for Artwork: " + formData.artworkTitle, // name of COA
         formData.certificationOrganization, // organizationName of COA
         [], // url, gonna be attested by the creator, if needed.
-        "", // extra, keep empty
+        extra, // extra, put imageUrls here
         metadata, // metadata, see above
         formData.apiKey // apiKey
       );
