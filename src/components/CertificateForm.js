@@ -9,6 +9,7 @@ import DynamicConnectButton from "./walletWidget";
 const testSignature = "https://sdk-static.thecertified.xyz/test_signature.png";
 const testImage = "https://sdk-static.thecertified.xyz/test_image.png";
 const testMarkerImage = "https://sdk-static.thecertified.xyz/test_markerImage.png";
+const signatureAttestationUrl = "https://scan.sign.global/attestation/SPA_LGlskofpNXxzHgZoqR9MO";
 
 const CertificateForm = () => {
   const { primaryWallet } = useDynamicContext();
@@ -66,7 +67,9 @@ const CertificateForm = () => {
         formData.medium, // details of COA
         "Certificate of Authenticity for Artwork: " + formData.artworkTitle, // name of COA
         formData.certificationOrganization, // organizationName of COA
-        [], // url, gonna be attested by the creator, if needed.
+        [
+          signatureAttestationUrl
+        ], // url, gonna be attested by the creator, if needed.
         extra, // extra, put imageUrls here
         metadata, // metadata, see above
         formData.apiKey // apiKey
@@ -157,6 +160,7 @@ const CertificateForm = () => {
           const result = await createSignatureAttestation(primaryWallet, testSignature, "Tom", "7c0eeddad6609d5774c1300ece83569c")
           console.log(result);
           alert(result["url"]);
+          // https://scan.sign.global/attestation/SPA_LGlskofpNXxzHgZoqR9MO
         }}>Create Signature Attestation</button>
         {result && <div>Attestation Created: {JSON.stringify(result)}</div>}
         {error && <div>Error: {error}</div>}
