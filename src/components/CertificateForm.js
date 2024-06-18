@@ -48,17 +48,16 @@ const CertificateForm = () => {
       signatureImageUrl: testSignature, // PDF generate need this one
       markerImageUrl: testMarkerImage, // PDF generate need this one
       logoImageUrl: testImage, // PDF generate need this one
+      editionNumber: 10 // PDF generate need this one
     });
     const metadata = JSON.stringify({
       artworkTitle: formData.artworkTitle,
       artistName: formData.artistName,
       yearOfCompletion: formData.yearOfCompletion,
       dimensions: formData.dimensions,
-      editionNumber: formData.editionNumber,
       medium: formData.medium,
       registrationNumber: formData.registrationNumber
     });
-    const 
     try {
       const attestationResult = await createAttestation(
         primaryWallet, // primaryWallet, from dynamic context,
