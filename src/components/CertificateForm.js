@@ -1,7 +1,7 @@
 import React, { useState, ReactElement } from "react";
 import ReactDOM from "react-dom";
 import {
-  Certificate, createAttestation
+  Certificate, createAttestation, createSignatureAttestation
 } from "certified-sdk";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import DynamicConnectButton from "./walletWidget";
@@ -152,6 +152,12 @@ const CertificateForm = () => {
           <> </>
           <button type="submit">Create Attestation</button>
         </form>
+        <button onClick={async () => {
+          // MD5 (test_signature.png) = 7c0eeddad6609d5774c1300ece83569c, if you don't want to use 'hash', you can pass an empty string
+          const result = await createSignatureAttestation(primaryWallet, testSignature, "Tom", "7c0eeddad6609d5774c1300ece83569c")
+          console.log(result);
+          alert(result["url"]);
+        }}>Create Signature Attestation</button>
         {result && <div>Attestation Created: {JSON.stringify(result)}</div>}
         {error && <div>Error: {error}</div>}
         {records && <div>Records: {JSON.stringify(records)}</div>}
