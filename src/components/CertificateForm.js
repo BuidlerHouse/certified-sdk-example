@@ -16,7 +16,7 @@ const CertificateForm = () => {
   const [formData, setFormData] = useState({
     artworkTitle: "Boardwalk 1990",
     artistName: "Tom Wilson",
-    yearOfCompletion: "21/12/2025",
+    yearOfCompletion: "12/21/2025",
     dimensions: "254x50cm",
     editionNumber: "1/50",
     medium:
@@ -55,6 +55,7 @@ const CertificateForm = () => {
       artworkTitle: formData.artworkTitle,
       artistName: formData.artistName,
       yearOfCompletion: formData.yearOfCompletion,
+      dateOfCertification: "12/21/2025",
       dimensions: formData.dimensions,
       medium: formData.medium,
       registrationNumber: formData.registrationNumber
@@ -162,7 +163,7 @@ const CertificateForm = () => {
           alert(result["url"]);
           // https://scan.sign.global/attestation/SPA_LGlskofpNXxzHgZoqR9MO
         }}>Create Signature Attestation</button>
-        {result && <div>Attestation Created: {JSON.stringify(result)}</div>}
+        {result && <div>Attestation Created: {JSON.stringify(result)}, View pdf (edition 1) {result.pdf}1</div>}
         {error && <div>Error: {error}</div>}
         {records && <div>Records: {JSON.stringify(records)}</div>}
         <div id="certificate-container">
@@ -174,7 +175,7 @@ const CertificateForm = () => {
             editionNumber={formData.editionNumber}
             medium={formData.medium}
             registrationNumber={formData.registrationNumber}
-            dateOfCertification="21/12/2025"
+            dateOfCertification="12/21/2025"
             signatureImagePath={testSignature}
             artworkImagePath={testImage}
             markerImagePath={testMarkerImage}
