@@ -18,7 +18,7 @@
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",
     "axios": "^1.7.2",
-    "certified-sdk": "^1.0.10",
+    "certified-sdk": "^1.0.12",
     "eth-rpc-errors": "^4.0.3",
     "ethereumjs-util": "^7.1.5",
     "install": "^0.13.0",
