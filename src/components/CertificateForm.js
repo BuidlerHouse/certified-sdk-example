@@ -18,7 +18,7 @@ const CertificateForm = () => {
     artistName: "Tom Wilson",
     yearOfCompletion: "12/21/2025",
     dimensions: "254x50cm",
-    editionNumber: "1/50",
+    editionNumber: "20",
     medium:
       "Embroidery on fabric, weaving with yarn or thread, batik on cotton. \n\n\n\n This document certifies that the accompanying artwork, titled [Artwork Title], is an original work created by [Artist’s Name]. This certificate is provided to affirm the authenticity of the aforementioned artwork.",
     registrationNumber: "1",
@@ -172,7 +172,7 @@ const CertificateForm = () => {
             artistName={formData.artistName}
             yearOfCompletion={formData.yearOfCompletion}
             dimensions={formData.dimensions}
-            editionNumber={formData.editionNumber}
+            editionNumber={"1/" + formData.editionNumber}
             medium={formData.medium}
             registrationNumber={formData.registrationNumber}
             dateOfCertification="12/21/2025"
