@@ -1,5 +1,6 @@
 import {
   Certificate,
+  CertificateTemplate,
   createAttestation,
   createSignatureAttestation,
 } from 'certified-sdk'
@@ -24,7 +25,8 @@ const CertificateForm = () => {
     yearOfCompletion: '12/21/2025',
     dimensions: '254x50cm',
     editionNumber: '50',
-    materials: 'Embroidery on fabric, weaving with yarn or thread, batik on cotton.',
+    materials:
+      'Embroidery on fabric, weaving with yarn or thread, batik on cotton.',
     registrationNumber: '1',
     certificationOrganization: 'MarkMaker',
     apiKey: '',
@@ -183,12 +185,12 @@ const CertificateForm = () => {
         {error && <div>Error: {error}</div>}
         {records && <div>Records: {JSON.stringify(records)}</div>}
         <div id="certificate-container">
-          <Certificate
+          <CertificateTemplate
             artworkTitle={formData.artworkTitle}
             artistName={formData.artistName}
             yearOfCompletion={formData.yearOfCompletion}
             dimensions={formData.dimensions}
-            editionNumber={"1/" + formData.editionNumber}
+            editionNumber={'1/' + formData.editionNumber}
             materials={formData.materials}
             registrationNumber={formData.registrationNumber}
             dateOfCertification="12/21/2025"
