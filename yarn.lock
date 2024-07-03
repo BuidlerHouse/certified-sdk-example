@@ -4655,10 +4655,10 @@ case-sensitive-paths-webpack-plugin@^2.4.0:
   resolved "https://registry.npmjs.org/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.4.0.tgz"
   integrity sha512-roIFONhcxog0JSSWbvVAh3OocukmSgpqOH6YpMkCvav/ySIV3JKg4Dc8vYtQjYi/UxpNE36r/9v+VqTQqgkYmw==
 
-certified-sdk@^1.0.17:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/certified-sdk/-/certified-sdk-1.0.17.tgz#e142d27f5c7744ec7d1e4f53c4a9b4306f5fa318"
-  integrity sha512-WqHXmSwxqGSwbcDJnpLyF8Iqn5L8wbOngYpoRMIff6Bqm8chvvOP+9K/6MdwEpo9BqUx3aw4IVdnjqC27JV+3Q==
+certified-sdk@^1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/certified-sdk/-/certified-sdk-1.0.18.tgz#c9ea2df17cdfea39a8430c7cbbebb331cbfdd2e7"
+  integrity sha512-mauoxdRHPoOH/0BOsNl2S23uoT7DH6zil7K2pSRYLZ5pJ5VVY5ui8XEt+MjIBxF0F9/z8mpF31A+STd0BqGzhQ==
   dependencies:
     "@ethsign/sp-sdk" "^0.3.31"
     "@prisma/client" "^5.14.0"
