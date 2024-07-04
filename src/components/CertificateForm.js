@@ -22,7 +22,7 @@ const CertificateForm = () => {
   const [formData, setFormData] = useState({
     artworkTitle: 'Boardwalk 1990',
     artistName: 'Tom Wilson',
-    yearOfCompletion: '12/21/2025',
+    yearOfCompletion: '1999',
     dimensions: '254x50cm',
     editionNumber: '50',
     materials:
@@ -30,6 +30,7 @@ const CertificateForm = () => {
     registrationNumber: '1',
     certificationOrganization: 'MarkMaker',
     apiKey: '',
+    dateOfCertification: '12/21/2025',
   })
 
   const [result, setResult] = useState(null)
@@ -61,7 +62,7 @@ const CertificateForm = () => {
       artworkTitle: formData.artworkTitle,
       artistName: formData.artistName,
       yearOfCompletion: formData.yearOfCompletion,
-      dateOfCertification: '12/21/2025',
+      dateOfCertification: formData.dateOfCertification,
       dimensions: formData.dimensions,
       materials: formData.materials,
       registrationNumber: formData.registrationNumber,
@@ -112,10 +113,15 @@ const CertificateForm = () => {
             onChange={handleChange}
           />
           <input
-            type="date"
             name="yearOfCompletion"
             placeholder="Year of Completion"
             value={formData.yearOfCompletion}
+            onChange={handleChange}
+          />
+          <input
+            name="dateOfCertification"
+            placeholder="Date of Certification"
+            value={formData.dateOfCertification}
             onChange={handleChange}
           />
           <input
@@ -193,7 +199,7 @@ const CertificateForm = () => {
             editionNumber={'1/' + formData.editionNumber}
             materials={formData.materials}
             registrationNumber={formData.registrationNumber}
-            dateOfCertification="12/21/2025"
+            dateOfCertification={formData.dateOfCertification}
             signatureImagePath={testSignature}
             artworkImagePath={testImage}
             markerImagePath={testMarkerImage}
